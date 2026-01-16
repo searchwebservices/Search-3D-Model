@@ -9,6 +9,7 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 
 type SceneProps = {
   className?: string;
+  sceneUrl?: string;
 };
 
 // #region agent log
@@ -33,7 +34,7 @@ fetch("http://127.0.0.1:7243/ingest/f303dccd-12c9-4eb5-9260-a4b62a14399e", {
 }).catch(() => {});
 // #endregion agent log
 
-export default function Scene({ className }: SceneProps) {
+export default function Scene({ className, sceneUrl = "/scene.splinecode" }: SceneProps) {
   // #region agent log
   fetch("http://127.0.0.1:7243/ingest/f303dccd-12c9-4eb5-9260-a4b62a14399e", {
     method: "POST",
@@ -44,7 +45,7 @@ export default function Scene({ className }: SceneProps) {
       hypothesisId: "H1",
       location: "components/Scene.tsx:Scene:entry",
       message: "Scene render start",
-      data: { className },
+      data: { className, sceneUrl },
       timestamp: Date.now(),
     }),
   }).catch(() => {});
@@ -60,7 +61,7 @@ export default function Scene({ className }: SceneProps) {
       hypothesisId: "H2",
       location: "components/Scene.tsx:Scene:beforeSpline",
       message: "About to render Spline component",
-      data: { scene: "/scene.splinecode" },
+      data: { scene: sceneUrl },
       timestamp: Date.now(),
     }),
   }).catch(() => {});
@@ -79,13 +80,13 @@ export default function Scene({ className }: SceneProps) {
           hypothesisId: "H3",
           location: "components/Scene.tsx:Scene:useEffect",
           message: "Scene mounted",
-          data: { className },
+          data: { className, sceneUrl },
           timestamp: Date.now(),
         }),
       }
     ).catch(() => {});
     // #endregion agent log
-  }, [className]);
+  }, [className, sceneUrl]);
 
-  return <Spline className={className} scene="/scene.splinecode" />;
+  return <Spline className={className} scene={sceneUrl} />;
 }
