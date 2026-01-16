@@ -1,66 +1,53 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { Montserrat } from "next/font/google";
+import Scene from "../components/Scene";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400"] });
 
 export default function Home() {
+  // #region agent log
+  fetch("http://127.0.0.1:7243/ingest/f303dccd-12c9-4eb5-9260-a4b62a14399e", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      sessionId: "debug-session",
+      runId: "pre-fix",
+      hypothesisId: "H5",
+      location: "app/page.tsx:Home:entry",
+      message: "Home render start",
+      data: { hasWindow: typeof window !== "undefined" },
+      timestamp: Date.now(),
+    }),
+  }).catch(() => {});
+  // #endregion agent log
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="relative h-screen w-screen bg-[#ffb6c1]">
+      <div className="absolute left-4 top-4 z-10 flex items-center gap-3 text-black">
+        <svg
+          aria-hidden="true"
+          className="h-7 w-7 rotate-90"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="10.5" cy="10.5" r="6.5" />
+          <path d="m20 20-4-4" />
+        </svg>
+        <div className="flex flex-col leading-none">
+          <span
+            className={`${montserrat.className} text-2xl font-normal uppercase`}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Search
+          </span>
+          <span className={`${montserrat.className} text-sm font-normal`}>
+            3D Model Web App
+          </span>
         </div>
-      </main>
-    </div>
+      </div>
+      <Scene className="h-full w-full" />
+    </main>
   );
 }
